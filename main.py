@@ -4,6 +4,8 @@ from player import Player
 from asteroid import Asteroid
 from asteroidfield import AsteroidField
 import sys
+from shot import Shot
+
 
 
 def main():
@@ -25,12 +27,14 @@ def main():
     drawable = pygame.sprite.Group()
     asteroids = pygame.sprite.Group()
     asteroids_field = pygame.sprite.Group()
+    shooting = pygame.sprite.Group()
 
     Player.containers = (updatable, drawable)
     player = Player(x, y)
     Asteroid.containers = (asteroids, updatable, drawable)
     AsteroidField.containers = (updatable,)
     asteroid_spawner = AsteroidField()
+    Shot.containers = (shooting, updatable, drawable)
 
     
 
@@ -45,8 +49,10 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
-        
+            
         dt = FPS_clock.tick(60) / 1000
+
+            
 
 
         updatable.update(dt)
