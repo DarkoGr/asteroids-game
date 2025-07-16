@@ -62,6 +62,26 @@ def main():
                 print("Game over!")
                 pygame.quit()
                 sys.exit()
+            
+        #asteroid & bullet collision
+
+        shot_to_remove = []
+        asteroid_to_remove = []
+
+        for asteroid in asteroids:
+            for shot in shooting:
+                if shot.collision(asteroid):
+                    shot_to_remove.append(shot)
+                    asteroid_to_remove.append(asteroid)
+                    break
+
+        for sh in shot_to_remove:
+            sh.kill()     
+
+        for ast in asteroid_to_remove:
+            ast.split()
+
+            
 
         
 

@@ -6,18 +6,18 @@ class Shot(CircleShape):
     def __init__(self, x, y, radius, player_angle):
         super().__init__(x, y, radius)
 
-        self.velocity = pygame.Vector2(0.-1).rotate(-player_angle + 45) * PLAYER_SHOOT_SPEED
+        self.velocity = pygame.Vector2(0.1).rotate(player_angle + 45) * PLAYER_SHOOT_SPEED
 
    
     def draw(self, screen):
-        # Crtanje metka kao malog belog kruga
+        
         return pygame.draw.circle(screen, "white", self.position, self.radius)
         
     def update(self, dt):
-        # Ažuriranje pozicije metka na osnovu brzine i vremena (dt)
+        
         self.position += self.velocity * dt
 
-        # Opciono: Uklanjanje metka kada izađe iz ekrana
+        
         # Ovo sprečava nakupljanje metaka koji se više ne vide
         if (self.position.x < -self.radius or 
             self.position.x > SCREEN_WIDTH + self.radius or
