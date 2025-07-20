@@ -8,8 +8,11 @@ from shot import Shot
 class Player(CircleShape):
     def __init__(self, x, y):
         super().__init__(x, y, PLAYER_RADIUS)
-        self.rotation = 0
+        self.rotation = 180
         self.last_shot_time = 0.0
+        self.lives = PLAYER_LIVES
+        self.is_invincible = False
+        self.invincible_timer = INVINCIBILITY_DURATION
 
     def triangle(self):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
@@ -20,7 +23,11 @@ class Player(CircleShape):
         return [a, b, c]    
     
     def draw(self, screen):
-        return pygame.draw.polygon(screen, "white", self.triangle(), 2)
+        if self.is_invincible:
+            if int(pygame.time.get_ticks() / 100) % 2 == 0:
+                pygame.draw.polygon(screen, "white", self.triangle(), 2)
+        else:
+            return pygame.draw.polygon(screen, "white", self.triangle(), 2)
     
     def rotate(self, dt):
         self.rotation += PLAYER_TURN_SPEED * dt
@@ -45,6 +52,26 @@ class Player(CircleShape):
             if current_time - self.last_shot_time > PLAYER_SHOT_COOLDOWN:
                 self.shoot()
                 self.last_shot_time = current_time
+        
+        if self.position.x < self.radius:
+            self.position.x = self.radius
+
+        if self.position.x > SCREEN_WIDTH - self.radius:
+            self.position.x = SCREEN_WIDTH - self.radius
+
+        if self.position.y < self.radius:
+            self.position.y = self.radius
+
+        if self.position.y > SCREEN_HEIGHT - self.radius:
+            self.position.y = SCREEN_HEIGHT - self.radius
+
+
+
+        if self.is_invincible:
+            self.invincible_timer -= dt
+            if self.invincible_timer <= 0:
+                self.is_invincible = False
+                self.invincible_timer = 0 
 
     def move(self, dt):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
