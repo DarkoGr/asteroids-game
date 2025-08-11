@@ -18,7 +18,6 @@ class Shot(CircleShape):
         self.position += self.velocity * dt
 
         
-        # Ovo sprečava nakupljanje metaka koji se više ne vide
         if (self.position.x < -self.radius or 
             self.position.x > SCREEN_WIDTH + self.radius or
             self.position.y < -self.radius or 

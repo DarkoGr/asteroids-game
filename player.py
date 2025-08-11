@@ -48,7 +48,7 @@ class Player(CircleShape):
             self.move(-dt)
 
         if keys[pygame.K_SPACE]:
-            current_time = pygame.time.get_ticks() / 1000.0 # Trenutno vreme u sekundama
+            current_time = pygame.time.get_ticks() / 1000.0 
             if current_time - self.last_shot_time > PLAYER_SHOT_COOLDOWN:
                 self.shoot()
                 self.last_shot_time = current_time
