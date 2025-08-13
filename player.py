@@ -6,13 +6,24 @@ from shot import Shot
 
 
 class Player(CircleShape):
-    def __init__(self, x, y):
+    def __init__(self, x, y, image):
         super().__init__(x, y, PLAYER_RADIUS)
         self.rotation = 180
         self.last_shot_time = 0.0
         self.lives = PLAYER_LIVES
         self.is_invincible = False
         self.invincible_timer = INVINCIBILITY_DURATION
+
+        self.image = image
+        self.original_image = None
+        if self.image:
+            
+            self.original_image = pygame.transform.scale(self.image, (PLAYER_RADIUS * 3, PLAYER_RADIUS * 3))
+            self.image = self.original_image.copy()
+            self.rect = self.image.get_rect(center=self.position)
+        else:
+            
+            self.rect = pygame.Rect(self.position.x - self.radius, self.position.y - self.radius, self.radius * 2, self.radius * 2)
 
     def triangle(self):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
@@ -23,12 +34,19 @@ class Player(CircleShape):
         return [a, b, c]    
     
     def draw(self, screen):
+        should_draw = True
         if self.is_invincible:
+            # Crta se samo u svakom drugom frejmu
             if int(pygame.time.get_ticks() / 100) % 2 == 0:
+                should_draw = False
+
+        if should_draw:
+            if self.image:
+                screen.blit(self.image, self.rect)
+            else:
                 pygame.draw.polygon(screen, "white", self.triangle(), 2)
-        else:
-            return pygame.draw.polygon(screen, "white", self.triangle(), 2)
-    
+
+
     def rotate(self, dt):
         self.rotation += PLAYER_TURN_SPEED * dt
 
@@ -65,17 +83,24 @@ class Player(CircleShape):
         if self.position.y > SCREEN_HEIGHT - self.radius:
             self.position.y = SCREEN_HEIGHT - self.radius
 
-
-
+        if self.image:
+            self.image = pygame.transform.rotate(self.original_image, - self.rotation)
+            self.rect = self.image.get_rect(center=self.position)
+        
+        # Logika za nevidljivost i timer
         if self.is_invincible:
             self.invincible_timer -= dt
             if self.invincible_timer <= 0:
                 self.is_invincible = False
-                self.invincible_timer = 0 
+                self.invincible_timer = INVINCIBILITY_DURATION # Vrati na pocetnu vrednost!
+    
+
+        
+
 
     def move(self, dt):
-        forward = pygame.Vector2(0, 1).rotate(self.rotation)
-        self.position += forward * PLAYER_SPEED * dt
+        forward = pygame.Vector2(0, -1).rotate(self.rotation)
+        self.position -= forward * PLAYER_SPEED * dt
 
     def shoot(self):
         
