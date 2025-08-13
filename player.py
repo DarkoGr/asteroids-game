@@ -36,7 +36,7 @@ class Player(CircleShape):
     def draw(self, screen):
         should_draw = True
         if self.is_invincible:
-            # Crta se samo u svakom drugom frejmu
+            # Crta se u svakom drugom frejmu
             if int(pygame.time.get_ticks() / 100) % 2 == 0:
                 should_draw = False
 
@@ -87,12 +87,12 @@ class Player(CircleShape):
             self.image = pygame.transform.rotate(self.original_image, - self.rotation)
             self.rect = self.image.get_rect(center=self.position)
         
-        # Logika za nevidljivost i timer
+        # invincibility and timer
         if self.is_invincible:
             self.invincible_timer -= dt
             if self.invincible_timer <= 0:
                 self.is_invincible = False
-                self.invincible_timer = INVINCIBILITY_DURATION # Vrati na pocetnu vrednost!
+                self.invincible_timer = INVINCIBILITY_DURATION 
     
 
         

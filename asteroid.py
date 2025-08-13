@@ -24,7 +24,6 @@ class Asteroid(CircleShape):
         elif Asteroid.all_asteroid_images:
             self.original_image_source = random.choice(Asteroid.all_asteroid_images)
         else:
-            print(f"Upozorenje: Nisu učitane slike za asteroid na ({x}, {y}). Korišćenje podrazumevanog kruga.")
             self.original_image_source = pygame.Surface((int(self.radius * 2), int(self.radius * 2)), pygame.SRCALPHA)
             pygame.draw.circle(self.original_image_source, (150, 150, 150), (int(self.radius), int(self.radius)), int(self.radius), 2)
         
