@@ -2,7 +2,7 @@ import pygame
 from constants import * 
 
 class Explosion(pygame.sprite.Sprite):
-    def __init__(self, x, y, size, explosion_images):
+    def __init__(self, x, y, size, explosion_images, explosion_sound):
         super().__init__(self.containers) 
 
         self.position = pygame.Vector2(x, y)
@@ -17,6 +17,8 @@ class Explosion(pygame.sprite.Sprite):
 
         self.animation_speed = 0.1 
         self.time_since_last_frame = 0.0
+
+        explosion_sound.play()
 
     def update(self, dt):
         self.time_since_last_frame += dt

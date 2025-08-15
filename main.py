@@ -1,13 +1,35 @@
 import pygame
+import random
 from constants import *
+pygame.init()
+pygame.mixer.pre_init(48000, -16, 2, 16384)
+pygame.mixer.init()
 from player import Player
 from asteroid import Asteroid
 from asteroidfield import AsteroidField
 import sys
 from shot import Shot
-import random
 from explosion import Explosion 
 
+background_music_path = f"/mnt/c/Users/X1extreme/Desktop/game_music1.mp3"
+
+try:
+    pygame.mixer.music.load(background_music_path)
+    pygame.mixer.music.set_volume(0.2)
+    print("Muzika u pozadini učitana.")
+except pygame.error as e:
+    print(f"Greška pri učitavanju muzike: {e}")
+
+pygame.mixer.music.play(-1)
+
+explosion_sound_path = f"/mnt/c/Users/X1extreme/Desktop/explosion.mp3"
+
+try:
+    explosion_sound = pygame.mixer.Sound(explosion_sound_path)
+    explosion_sound.set_volume(1.0)
+    print("Zvuk eksplozije učitan.")
+except pygame.error as e:
+    print(f"Greška pri učitavanju zvuka eksplozije: {e}")
 
 EXPLOSION_ANIMATION_FRAMES = []
 HEART_IMAGE = None
@@ -142,6 +164,7 @@ def main():
 
     background_image_path = f"/mnt/c/Users/{windows_username}/Desktop/{image_filename}"
     player1_image_path = f"/mnt/c/Users/{windows_username}/Desktop/{player1_image}"
+
     
 
     asteroid_image_paths = [
@@ -278,6 +301,8 @@ def main():
     asteroid_spawner = AsteroidField()
     
     start_time = pygame.time.get_ticks()
+
+    
     
 
     while True:
@@ -327,7 +352,7 @@ def main():
                 player.is_invincible = True
                 player.invincible_timer = INVINCIBILITY_DURATION
                 player.lives -= 1
-                Explosion(player.position.x, player.position.y, player.radius * 3, EXPLOSION_ANIMATION_FRAMES)
+                Explosion(player.position.x, player.position.y, player.radius * 3, EXPLOSION_ANIMATION_FRAMES, explosion_sound)
                 score += 20
                 asteroid.kill()
                 player.position = pygame.Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2) 
@@ -367,7 +392,7 @@ def main():
             else:
                 score += 10
 
-            Explosion(ast.position.x, ast.position.y, ast.radius * 2, EXPLOSION_ANIMATION_FRAMES)
+            Explosion(ast.position.x, ast.position.y, ast.radius * 2, EXPLOSION_ANIMATION_FRAMES, explosion_sound)
             ast.split()
 
             
