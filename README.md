@@ -1,5 +1,9 @@
 # Asteroids Game 🚀
 
+## Preview
+
+![Game Screenshot](Asteroids.png)
+
 Arcade-style game inspired by the classic Asteroids, built in Python using Pygame.
 
 ## Features
