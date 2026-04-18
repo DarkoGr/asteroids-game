@@ -25,3 +25,8 @@ Arcade-style game inspired by the classic Asteroids, built in Python using Pygam
 ```bash
 pip install pygame
 python main.py
+
+
+
+## Notes
+This project was built to practice Python, object-oriented programming, and basic game development concepts.
